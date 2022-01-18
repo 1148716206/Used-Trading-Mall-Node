@@ -1,8 +1,13 @@
 let express = require('express')
 let router = express.Router() //加载路由
-
 const conn = require('./db') //导入db
 
+const util = require("util")
+const pathLib = require('path')
+const fs = require('fs')
+const multer = require('multer')
+const multiparty = require('multiparty')
+var upload = multer({dest: 'upload_tmp/'});
 /**
  * 用户管理
  */
@@ -141,6 +146,61 @@ router.get('/api/getGoodsInfo', (req, res) => {
         }
     })
 })
+
+
+/**
+ * 上传图片
+ */
+
+/*router.post('/api/uploadGoodsImg',  upload.any(), function(req,res){
+    console.log('1112')
+    console.log(req.files); // 上传的文件信息
+
+    var des_file = "./upload/" + req.files[0].originalname;
+
+    fs.readFile( req.files[0].path, function (err, data) {
+        fs.writeFile(des_file, data, function (err) {
+            if( err ){
+                console.log( err );
+            }else{
+                var response = {
+                    message:'File uploaded successfully',
+                    filename:req.files[0].originalname
+                };
+                console.log( response );
+                res.end( JSON.stringify( response ) );
+            }
+        });
+    });
+});*/
+router.post('/api/uploadGoodsImg', function(req,res){
+    let form = new multiparty.Form();
+    //form.uploadDir="193.9.139.13:8080/cactusImage";
+    var path = require('path');
+    // form.uploadDir=path.resolve(__dirname,'./upload_tmp');
+    form.uploadDir="175.24.172.16/bs/admin/images";
+    console.log(form.uploadDir);
+    form.keepExtensions=true;   //是否保留后缀
+    form.autoFiels=true;       //启用文件事件，并禁用部分文件事件，如果监听文件事件，则默认为true。
+    form.parse(req,function(err,fields,files){  //其中fields表示你提交的表单数据对象，files表示你提交的文件对象
+        if(err){
+            console.log('err',err)
+            res.json({
+                status:"1",
+                msg:"上传失败！"+err
+            });
+        }else{
+            res.json({
+                status:"0",
+                msg:"上传成功！",
+                personPicture: files.images[0].path   //存到数据库中的picture的路径（绝对路径）
+            });
+        }
+    });
+
+});
+
+
 
 
 module.exports = router
