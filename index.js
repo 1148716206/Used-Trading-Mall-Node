@@ -2,6 +2,7 @@ let express = require('express')
 const bodyParser = require('body-parser')
 let app = express()
 const router = require('./router')
+const util = require("util")
 
 
 app.use(require('cors')()) //设置跨域访问

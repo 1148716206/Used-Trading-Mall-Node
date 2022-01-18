@@ -6,22 +6,62 @@ const conn = require('./db') //导入db
 /**
  * 用户管理
  */
-//查询
-router.get('/api/getUserInfo', (req, res) => {
-    let sqlStr = 'select * from userinfo'
-    conn.query(sqlStr, (err, results) => {
-        let pager = {};
-        pager.current = 1;
-        pager.total = results.length;
-        pager.size = 5;
-        pager.count = Math.ceil(pager.total / pager.size);
+// (分页查询 + 模糊查询)
 
-        let data = results.slice((pager.current - 1) * pager.size, (pager.current - 1) * pager.size + pager.size );
-        
-        if(err) {
-            res.json({code: 1, msg: '获取数据失败！'})
+router.post('/api/getUserInfo', (req, res) => {
+    // 模糊查询sql SELECT * FROM userinfo WHERE id LIKE ? OR username Like ? OR phone LIKE ?
+    //模糊查询两种方法 直接在sql+ mysql.escape("%"+req.body.name+"%")
+    // sql += "WHERE id LIKE" + mysql.escape("%"+req.body.name+"%")
+    var params = req.body
+    let sql = "SELECT * FROM `userinfo`"  //查询所有数据
+    let content = []
+    let isMore = false
+    let total = 0
+    if((params.id && params.username) ||
+        (params.id && params.phone) ||
+        (params.username && params.phone)
+    ) {
+        isMore = true
+    }
+
+    if(params.id) {
+        if(isMore) {
+            sql += "AND id LIKE ?"
         } else {
-            res.json({code: 200, msg: data})
+            sql += "WHERE id LIKE ?"
+        }
+        content.push("%"+params.id+"%")
+    }
+    if(params.username) {
+
+        if(isMore) {
+            sql += "AND username LIKE ?"
+        } else {
+            sql += "WHERE username LIKE ?"
+        }
+        content.push("%"+params.username+"%")
+    }
+    if(params.phone) {
+        if(isMore) {
+            sql += "AND phone LIKE ?"
+        } else {
+            sql += "WHERE phone LIKE ?"
+        }
+        content.push("%"+params.phone+"%")
+    }
+    if(params.size) {
+        sql += 'limit ?,?'
+        content.push((params.current - 1) * params.size, parseInt(params.size))
+    }
+    conn.query('SELECT COUNT(*) as count FROM `userinfo`', null, (err, result) => {
+        total = JSON.parse(JSON.stringify(result))[0].count
+    })
+
+    conn.query(sql, content, (err, result) => {
+        if (err) {
+            res.json({code: 500, msg: '获取数据失败！'})
+        } else {
+            res.json({code: 200, data: result, total})
         }
     })
 })
@@ -30,7 +70,7 @@ router.get('/api/getUserInfo', (req, res) => {
 router.post('/api/delUserInfo', (req, res) => {
     conn.query('DELETE FROM userinfo WHERE id=?', [req.body.id], (err, results) => {
         if(err) {
-            res.json({code: 1, msg: '删除失败！'})
+            res.json({code: 500, msg: '删除失败！'})
             console.log(err)
         } else {
             res.json({code: 200, msg: '删除成功！'})
@@ -40,11 +80,12 @@ router.post('/api/delUserInfo', (req, res) => {
 
 //修改
 router.post('/api/updateUserInfo',  (req, res) => {
+    var params = [req.body.username, req.body.gender, req.body.phone, req.body.address, req.body.permission]
     conn.query('UPDATE userinfo SET username="ass" WHERE id = 4', req.body, (err, results) => {
         if(err) {
-            res.json({code: 1, msg: '新增失败!'})
+            res.json({code: 500, msg: '修改失败!'})
         } else {
-            res.json({code: 200, msg: '新增成功!'})
+            res.json({code: 200, msg: '修改成功!'})
         }
     })
 })
@@ -65,10 +106,12 @@ router.get('/api/getOrderInfo', (req, res) => {
 })
 
 //插入数据
-router.post('/api/insertUserMsg',  (req, res) => {
-    conn.query('INSERT INTO account SET ?', req.body, (err, results) => {
+router.post('/api/insertUserInfo',  (req, res) => {
+    var params = [req.body.username, req.body.gender, req.body.phone, req.body.address, req.body.permission]
+    console.log('插入数据',params)
+    conn.query('INSERT INTO userInfo SET username= ?, password=123456, gender= ?, phone= ?, address= ?, permission= ?', params, (err, results) => {
         if(err) {
-            res.json({code: 1, msg: '新增失败!'})
+            res.json({code: 500, msg: '新增失败!'})
         } else {
             res.json({code: 200, msg: '新增成功!'})
         }
@@ -82,5 +125,22 @@ router.post('/api/insertUserMsg',  (req, res) => {
 /**
  * 留言管理
  */
+
+
+
+/**
+ * 商品图片
+ */
+router.get('/api/getGoodsInfo', (req, res) => {
+    let sqlStr = 'select * from goods_img';
+    conn.query(sqlStr, (err, results) => {
+        if(err) {
+            res.json({code: 200, msg: '获取数据失败！'})
+        } else {
+            res.json({code: 200, msg: results})
+        }
+    })
+})
+
 
 module.exports = router
