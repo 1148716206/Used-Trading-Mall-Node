@@ -142,7 +142,7 @@ router.get('/api/getGoodsInfo', (req, res) => {
         if(err) {
             res.json({code: 200, msg: '获取数据失败！'})
         } else {
-            res.json({code: 200, msg: results})
+            res.json({code: 200, data: results})
         }
     })
 })
@@ -177,8 +177,8 @@ router.post('/api/uploadGoodsImg', function(req,res){
     let form = new multiparty.Form();
     //form.uploadDir="193.9.139.13:8080/cactusImage";
     var path = require('path');
-    // form.uploadDir=path.resolve(__dirname,'./upload_tmp');
-    form.uploadDir="175.24.172.16/bs/admin/images";
+    form.uploadDir=path.resolve(__dirname,'./upload_tmp');
+    // form.uploadDir="175.24.172.16/bs/admin/images";
     console.log(form.uploadDir);
     form.keepExtensions=true;   //是否保留后缀
     form.autoFiels=true;       //启用文件事件，并禁用部分文件事件，如果监听文件事件，则默认为true。
