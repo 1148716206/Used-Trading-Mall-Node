@@ -14,11 +14,11 @@ var upload = multer({dest: 'upload_tmp/'});
 // (分页查询 + 模糊查询)
 
 router.post('/api/getUserInfo', (req, res) => {
-    // 模糊查询sql SELECT * FROM userinfo WHERE id LIKE ? OR username Like ? OR phone LIKE ?
+    // 模糊查询sql SELECT * FROM user_info WHERE id LIKE ? OR username Like ? OR phone LIKE ?
     //模糊查询两种方法 直接在sql+ mysql.escape("%"+req.body.name+"%")
     // sql += "WHERE id LIKE" + mysql.escape("%"+req.body.name+"%")
     var params = req.body
-    let sql = "SELECT * FROM `userinfo`"  //查询所有数据
+    let sql = "SELECT * FROM `user_info`"  //查询所有数据
     let content = []
     let isMore = false
     let total = 0
@@ -58,7 +58,7 @@ router.post('/api/getUserInfo', (req, res) => {
         sql += 'limit ?,?'
         content.push((params.current - 1) * params.size, parseInt(params.size))
     }
-    conn.query('SELECT COUNT(*) as count FROM `userinfo`', null, (err, result) => {
+    conn.query('SELECT COUNT(*) as count FROM `user_info`', null, (err, result) => {
         total = JSON.parse(JSON.stringify(result))[0].count
     })
 
@@ -73,7 +73,7 @@ router.post('/api/getUserInfo', (req, res) => {
 
 //删除
 router.post('/api/delUserInfo', (req, res) => {
-    conn.query('DELETE FROM userinfo WHERE id=?', [req.body.id], (err, results) => {
+    conn.query('DELETE FROM user_info WHERE id=?', [req.body.id], (err, results) => {
         if(err) {
             res.json({code: 500, msg: '删除失败！'})
             console.log(err)
@@ -86,7 +86,7 @@ router.post('/api/delUserInfo', (req, res) => {
 //修改
 router.post('/api/updateUserInfo',  (req, res) => {
     var params = [req.body.username, req.body.gender, req.body.phone, req.body.address, req.body.permission]
-    conn.query('UPDATE userinfo SET username="ass" WHERE id = 4', req.body, (err, results) => {
+    conn.query('UPDATE user_info SET username="ass" WHERE id = 4', req.body, (err, results) => {
         if(err) {
             res.json({code: 500, msg: '修改失败!'})
         } else {
@@ -100,7 +100,7 @@ router.post('/api/updateUserInfo',  (req, res) => {
  */
 //查询数据
 router.get('/api/getOrderInfo', (req, res) => {
-    let sqlStr = 'select * from orderinfo';
+    let sqlStr = 'select * from order_info';
     conn.query(sqlStr, (err, results) => {
         if(err) {
             res.json({code: 1, msg: '获取数据失败！'})
@@ -114,7 +114,7 @@ router.get('/api/getOrderInfo', (req, res) => {
 router.post('/api/insertUserInfo',  (req, res) => {
     var params = [req.body.username, req.body.gender, req.body.phone, req.body.address, req.body.permission]
     console.log('插入数据',params)
-    conn.query('INSERT INTO userInfo SET username= ?, password=123456, gender= ?, phone= ?, address= ?, permission= ?', params, (err, results) => {
+    conn.query('INSERT INTO user_info SET username= ?, password=123456, gender= ?, phone= ?, address= ?, permission= ?', params, (err, results) => {
         if(err) {
             res.json({code: 500, msg: '新增失败!'})
         } else {
@@ -137,7 +137,7 @@ router.post('/api/insertUserInfo',  (req, res) => {
  * 商品图片
  */
 router.get('/api/getGoodsInfo', (req, res) => {
-    let sqlStr = 'select * from goods_img';
+    let sqlStr = 'select * from goods_info';
     conn.query(sqlStr, (err, results) => {
         if(err) {
             res.json({code: 200, msg: '获取数据失败！'})
@@ -177,21 +177,22 @@ router.post('/api/uploadGoodsImg', function(req,res){
     let form = new multiparty.Form();
     //form.uploadDir="193.9.139.13:8080/cactusImage";
     var path = require('path');
-    form.uploadDir=path.resolve(__dirname,'./upload_tmp');
-    // form.uploadDir="175.24.172.16/bs/admin/images";
-    console.log(form.uploadDir);
+    // form.uploadDir=path.resolve(__dirname,'./upload_tmp');
+    form.uploadDir="http://www.cz2000.top/bs/admin/images";
+    console.log('__dirname',__dirname)
+    console.log('form.uploadDir',form.uploadDir)
     form.keepExtensions=true;   //是否保留后缀
     form.autoFiels=true;       //启用文件事件，并禁用部分文件事件，如果监听文件事件，则默认为true。
     form.parse(req,function(err,fields,files){  //其中fields表示你提交的表单数据对象，files表示你提交的文件对象
         if(err){
-            console.log('err',err)
+            console.log(err)
             res.json({
                 status:"1",
                 msg:"上传失败！"+err
             });
         }else{
             res.json({
-                status:"0",
+                status:"200",
                 msg:"上传成功！",
                 personPicture: files.images[0].path   //存到数据库中的picture的路径（绝对路径）
             });
