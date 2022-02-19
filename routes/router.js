@@ -1,6 +1,6 @@
 let express = require('express')
 let router = express.Router() //加载路由
-const conn = require('./db') //导入db
+const conn = require('../db') //导入db
 
 const util = require("util")
 const pathLib = require('path')
@@ -8,6 +8,30 @@ const fs = require('fs')
 const multer = require('multer')
 const multiparty = require('multiparty')
 var upload = multer({dest: 'upload_tmp/'});
+
+
+/**
+ * 前台登录
+ */
+router.post('/login',(req,res) => {
+    var Data = {
+        status:400,
+        msg:'用户名错误！'
+    }
+    console.log(req.body)
+    if(req.body.username !== 'xdd'){
+        // res.send(Data);
+        console.log(req.body)
+    }else{
+        if(req.body.password !== '123456'){
+            res.json({code: 500, msg:'密码错误！'})
+        }else{
+            res.json({code: 500, msg:'用户存在！'})
+        }
+    }
+})
+
+
 /**
  * 用户管理
  */

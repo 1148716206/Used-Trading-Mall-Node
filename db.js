@@ -2,7 +2,7 @@
 //链接数据库
 
 const mysql = require('mysql')
-const conn = mysql.createConnection({
+const db = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
     password: '123456',
@@ -10,5 +10,11 @@ const conn = mysql.createConnection({
     multipleStatements: true
 })
 
-conn.connect()
-module.exports = conn
+module.exports = (sql, arr, callback) => {
+    db.query(sql, arr, function(error, result) {
+        if (error) {
+            return console.log(error); 
+        }
+        callback(result);
+    });
+};
