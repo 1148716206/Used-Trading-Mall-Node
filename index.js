@@ -11,6 +11,8 @@ const router = require('./routes/router')
 const multer = require('multer')
 const objMulter = multer({dest: './www/upload/'})
 
+
+
 app.use(require('cors')()) //设置跨域访问
 
 app.use(bodyParser.urlencoded({extended: false})) //挂载参数处理中间件(post)  application/x-www-form-urlencoded
@@ -22,6 +24,8 @@ app.use('/api/register', require('./routes/register'));
 app.use('/api/getGoodsInfo', require('./routes/home'));
 app.use('/api/login', require('./routes/login'));
 app.use('/api/cart', require('./routes/cart'));
+app.use('/api/personal', require('./routes/personal'));
+app.use('/api/personal', require('./routes/personal'));
 
 app.use((err, req, res, next) => {
 

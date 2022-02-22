@@ -37,6 +37,7 @@ router.post('/login',(req,res) => {
  */
 // (分页查询 + 模糊查询)
 
+/*
 router.post('/api/getUserInfo', (req, res) => {
     // 模糊查询sql SELECT * FROM user_info WHERE id LIKE ? OR username Like ? OR phone LIKE ?
     //模糊查询两种方法 直接在sql+ mysql.escape("%"+req.body.name+"%")
@@ -94,6 +95,7 @@ router.post('/api/getUserInfo', (req, res) => {
         }
     })
 })
+*/
 
 //删除
 router.post('/api/delUserInfo', (req, res) => {
@@ -160,16 +162,16 @@ router.post('/api/insertUserInfo',  (req, res) => {
 /**
  * 商品图片
  */
-router.get('/api/getGoodsInfo', (req, res) => {
-    let sqlStr = 'select * from goods_info';
-    conn.query(sqlStr, (err, results) => {
-        if(err) {
-            res.json({code: 200, msg: '获取数据失败！'})
-        } else {
-            res.json({code: 200, data: results})
-        }
-    })
-})
+// router.get('/api/getGoodsInfo', (req, res) => {
+//     let sqlStr = 'select * from goods_info';
+//     conn.query(sqlStr, (err, results) => {
+//         if(err) {
+//             res.json({code: 200, msg: '获取数据失败！'})
+//         } else {
+//             res.json({code: 200, data: results})
+//         }
+//     })
+// })
 
 
 /**
