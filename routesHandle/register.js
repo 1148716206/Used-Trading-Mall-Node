@@ -2,7 +2,6 @@ const db = require('../db');
 const bcrypt = require('bcryptjs');
 module.exports = (req, res) => {
     // 查询用户名是否存在
-
     const sql = 'SELECT * FROM user_info WHERE username=?';
     db(sql, req.body.username, result => {
         if(result.length >= 1) {

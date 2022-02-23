@@ -25,7 +25,8 @@ app.use('/api/getGoodsInfo', require('./routes/home'));
 app.use('/api/login', require('./routes/login'));
 app.use('/api/cart', require('./routes/cart'));
 app.use('/api/personal', require('./routes/personal'));
-app.use('/api/personal', require('./routes/personal'));
+app.use('api/detail',require('./routes/detail'))
+
 
 app.use((err, req, res, next) => {
 
