@@ -7,7 +7,7 @@ const config = require('./config');
 
 
 const bodyParser = require('body-parser')
-const router = require('./routes/router')
+const router = require('./router')
 const multer = require('multer')
 const objMulter = multer({dest: './www/upload/'})
 
@@ -19,13 +19,16 @@ app.use(bodyParser.urlencoded({extended: false})) //挂载参数处理中间件(
 
 app.use(bodyParser.json())  //处理JSON格式参数
 app.use(expJWT({ secret: config.jwtKey, algorithms: ['HS256']}).unless({path: ['/api/login', '/api/register']}));
-
+app.use('/',require('./router'))
 app.use('/api/register', require('./routes/register'));
 app.use('/api/getGoodsInfo', require('./routes/home'));
 app.use('/api/login', require('./routes/login'));
 app.use('/api/cart', require('./routes/cart'));
 app.use('/api/personal', require('./routes/personal'));
-app.use('api/detail',require('./routes/detail'))
+app.use('/api/pulish', require('./routes/pulish'));
+app.use('/api/detail',require('./routes/detail'))
+app.use('/api/cart',require('./routes/cart'))
+
 
 
 app.use((err, req, res, next) => {

@@ -1,12 +1,13 @@
 let express = require('express')
 let router = express.Router() //加载路由
-const conn = require('../db') //导入db
+const conn = require('./db') //导入db
 
 const util = require("util")
 const pathLib = require('path')
 const fs = require('fs')
 const multer = require('multer')
 const multiparty = require('multiparty')
+const path = require("path")
 var upload = multer({dest: 'upload_tmp/'});
 
 
@@ -203,10 +204,11 @@ router.post('/api/uploadGoodsImg', function(req,res){
     let form = new multiparty.Form();
     //form.uploadDir="193.9.139.13:8080/cactusImage";
     var path = require('path');
-    // form.uploadDir=path.resolve(__dirname,'./upload_tmp');
-    form.uploadDir="http://www.cz2000.top/bs/admin/images";
+    form.uploadDir=path.resolve('./upload/upload_tmp');
+    // form.uploadDir="http://www.cz2000.top/bs/admin/images";
     console.log('__dirname',__dirname)
     console.log('form.uploadDir',form.uploadDir)
+
     form.keepExtensions=true;   //是否保留后缀
     form.autoFiels=true;       //启用文件事件，并禁用部分文件事件，如果监听文件事件，则默认为true。
     form.parse(req,function(err,fields,files){  //其中fields表示你提交的表单数据对象，files表示你提交的文件对象
