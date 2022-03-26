@@ -27,7 +27,7 @@ module.exports = (req, res) => {
         }
         // 3. 根据用户信息生成 token
         const token = jwt.sign({ username: req.body.username }, config.jwtKey, {
-            expiresIn: '1h'
+            expiresIn: '100000h'
         });
         res.send({
             status: 200,
