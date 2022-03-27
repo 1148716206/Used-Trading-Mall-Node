@@ -28,6 +28,7 @@ const addCart = (req, res) => {
 		if (result.length !== 0) {
             //存在 改变数量
             const count = JSON.parse(JSON.stringify(result))[0].goods_count
+
             let newCount = count + req.body.goods_count
             const updateSQL = `UPDATE cart_info SET goods_count='${newCount}' WHERE goods_id='${req.body.goods_id}'` 
             db(updateSQL, null, (result) => {

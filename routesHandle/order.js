@@ -1,17 +1,42 @@
 const db = require('../db');
 
-// const getCartInfo = (req, res) => {
-// 	console.log(req.body);
-// 	const sql = `SELECT * FROM cart_info WHERE username=?`;
-// 	db(sql, req.body.username, (result) => {
-// 		if (result) {
-// 			return res.send({
-// 				status: 200,
-// 				data: result,
-// 			});
-// 		}
-// 	});
-// };
+const getOrder = (req, res) => {
+	let { username } = req.body
+	/*const sql = `SELECT goods_list FROM order_info WHERE username='${username}'`;
+	db(sql, null, (result) => {
+		if (result) {
+			console.log(result)
+			let data = []
+			for(let i of result) {
+				let newItem = [i]
+				data.push(JSON.parse(JSON.stringify(newItem)))
+			}
+			return res.send({
+				status: 200,
+				data,
+			});
+		}
+	});*/
+
+	const sql = `SELECT * FROM order_info WHERE username='${username}'`;
+	db(sql, null, (result) => {
+		if (result) {
+/*
+			console.log(JSON.parse(JSON.stringify(result)))
+			let data = []
+			for(let i of result) {
+				let newItem = [i]
+				data.push(JSON.parse(JSON.stringify(newItem)))
+			}
+*/
+
+			return res.send({
+				status: 200,
+				data:JSON.parse(JSON.stringify(result)),
+			});
+		}
+	});
+};
 
 const addOrder = (req, res) => {
 	const { username, address, phone, payment } = req.body;
@@ -24,15 +49,14 @@ const addOrder = (req, res) => {
 			for (let i = 0; i < goodsNumber; i++) {
 				const deleteSQL = `DELETE FROM cart_info WHERE goods_id=${req.body.goods_list[i].goods_id}`;
 				db(deleteSQL, null, (result) => {
-					if (result) {
-						return res.send({
-							status: 200,
-							msg: '购买成功',
-						});
-					}
+
 				});
 			}
 		}
+		return res.send({
+			status:200,
+			msg: '购买成功',
+		});
 	});
 };
 
@@ -60,4 +84,4 @@ const addOrder = (req, res) => {
 // 	});
 // };
 
-module.exports = { addOrder };
+module.exports = { getOrder, addOrder };

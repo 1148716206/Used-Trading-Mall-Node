@@ -50,7 +50,7 @@ module.exports = (req, res) => {
 		}).then(() => {
             console.log(userDate)
 			const token = jwt.sign(
-				{ username: req.body.username, ...userDate },
+				{ username: req.body.username, ...userDate,password:null },
 				config.jwtKey,
 				{
 					expiresIn: '100000h',
