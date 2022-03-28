@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: false})) //挂载参数处理中间件(
 app.use(bodyParser.json())  //处理JSON格式参数
 app.use(expJWT({ secret: config.jwtKey, algorithms: ['HS256']}).unless({path: ['/api/login', '/api/register', 
 '/api/manageUser',
+'/api/searchGoods',
 '/api/getGoodsInfo',
 '/api/detail/getGoodsMessage',
 '/api/detail/getGoodsDetail',
@@ -36,11 +37,11 @@ app.use('/api/cart', require('./routes/cart'));
 app.use('/api/personal', require('./routes/personal'));
 app.use('/api/pulish', require('./routes/pulish'));
 app.use('/api/order', require('./routes/order'));
-
-app.use('/api/getGoodsInfo', require('./routes/home'));
 app.use('/api/detail',require('./routes/detail'))
 
 
+app.use('/api/getGoodsInfo', require('./routes/home'));
+app.use('/api/searchGoods', require('./routes/search'));
 app.use('/api/manageUser',require('./routes/manage/user'))
 app.use('/api/manageUpdateUser',require('./routes/manage/updateUser'))
 app.use('/api/manageInsertUser',require('./routes/manage/insertUser'))

@@ -63,7 +63,7 @@ const manageOrder = (req, res) => {
 		if (result) {
 			return res.send({
 				status: 200,
-				data: result,
+				data: JSON.parse(JSON.stringify(result)),
 				total,
 			});
 		}

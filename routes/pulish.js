@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { pulishGoods } = require('../routesHandle/pulish')
+const { pulishGoods,pulishGoodsImg } = require('../routesHandle/pulish')
 
 module.exports = router.post('/pulishGoods',pulishGoods)
+module.exports = router.post('/pulishGoodsImg',pulishGoodsImg)

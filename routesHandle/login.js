@@ -53,7 +53,7 @@ module.exports = (req, res) => {
 				{ username: req.body.username, ...userDate,password:null },
 				config.jwtKey,
 				{
-					expiresIn: '100000h',
+					expiresIn: '10000h',
 				}
 			);
 			res.send({

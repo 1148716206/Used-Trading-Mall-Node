@@ -60,17 +60,17 @@ const addOrder = (req, res) => {
 	});
 };
 
-// const deleteCartInfo = (req, res) => {
-// 	sql = `DELETE FROM cart_info WHERE goods_id=?`;
-// 	db(sql, req.body.goods_id, (result) => {
-// 		if (result) {
-// 			return res.send({
-// 				status: 200,
-// 				msg: '删除成功!'
-// 			});
-// 		}
-// 	});
-// };
+const deleteOrder = (req, res) => {
+	sql = `DELETE FROM order_info WHERE id=${req.body.id}`;
+	db(sql, null, (result) => {
+		if (result) {
+			return res.send({
+				status: 200,
+				msg: '删除成功!'
+			});
+		}
+	});
+};
 
 // const updateCartInfo = (req, res) => {
 // 	sql = `UPDATE cart_info SET goods_count='${req.body.goods_count}' WHERE goods_id='${req.body.goods_id}'`;
@@ -84,4 +84,4 @@ const addOrder = (req, res) => {
 // 	});
 // };
 
-module.exports = { getOrder, addOrder };
+module.exports = { getOrder, addOrder, deleteOrder};
