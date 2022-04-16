@@ -106,6 +106,7 @@ const getUserInfo = (req, res) => {
 const getAvatar = (req, res) => {
     const sql = "SELECT avatar FROM user_info WHERE username=?"
     db(sql, req.user.username, result => {
+        // console.log(path.join(__dirname, "../upload/user_avatar/"+result[0].avatar));
         if (result) {
             return res.sendFile(path.join(__dirname, "../upload/user_avatar/"+result[0].avatar))
         }

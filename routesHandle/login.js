@@ -10,7 +10,6 @@ module.exports = (req, res) => {
 
 	const sql = 'SELECT * FROM user_info WHERE username=?';
 	db(sql, req.body.username, (result) => {
-		console.log(result);
 		if (result.length !== 1) {
 			return res.send({
 				status: 400,
@@ -48,7 +47,7 @@ module.exports = (req, res) => {
 				resolve();
 			}
 		}).then(() => {
-            console.log(userDate)
+
 			const token = jwt.sign(
 				{ username: req.body.username, ...userDate,password:null },
 				config.jwtKey,

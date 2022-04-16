@@ -1,7 +1,6 @@
 const db = require('../../db');
 
 const manageUpdateUser = (req, res) => {
-  console.log('1231');
 	var params = [
 		req.body.username,
 		req.body.gender,
@@ -15,7 +14,7 @@ const manageUpdateUser = (req, res) => {
   
 
 	db(sql, req.body.permission, (result) => {
-    console.log(result);
+    // console.log(result);
 		if (result) {
 			return res.send({
 				status: 200,

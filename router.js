@@ -140,7 +140,6 @@ router.get('/api/getOrderInfo', (req, res) => {
 //插入数据
 router.post('/api/insertUserInfo',  (req, res) => {
     var params = [req.body.username, req.body.gender, req.body.phone, req.body.address, req.body.permission]
-    console.log('插入数据',params)
     conn.query('INSERT INTO user_info SET username= ?, password=123456, gender= ?, phone= ?, address= ?, permission= ?', params, (err, results) => {
         if(err) {
             res.json({code: 500, msg: '新增失败!'})
@@ -206,8 +205,8 @@ router.post('/api/uploadGoodsImg', function(req,res){
     var path = require('path');
     form.uploadDir=path.resolve('./upload/upload_tmp');
     // form.uploadDir="http://www.cz2000.top/bs/admin/images";
-    console.log('__dirname',__dirname)
-    console.log('form.uploadDir',form.uploadDir)
+    // console.log('__dirname',__dirname)
+    // console.log('form.uploadDir',form.uploadDir)
 
     form.keepExtensions=true;   //是否保留后缀
     form.autoFiels=true;       //启用文件事件，并禁用部分文件事件，如果监听文件事件，则默认为true。

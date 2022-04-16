@@ -1,19 +1,21 @@
 const db = require('../../db');
 
-const manageDeleteUser = (req, res) => {
- 
+const manageUpdateOrder = (req, res) => {
+	// console.log(req.body)
 
-	sql = `DELETE FROM user_info WHERE id=?`;
 
-	db(sql, req.body.id, (result) => {
+	const updateSQL = `UPDATE order_info SET goods_list='[${JSON.stringify(req.body)}]' WHERE id='${req.body.id}' `
 
+
+	db(updateSQL, null , (result) => {
+		// console.log(result)
 		if (result) {
 			return res.send({
 				status: 200,
-				msg: '删除成功!'
+				msg: '修改成功!'
 			});
 		}
 	});
 };
 
-module.exports = {manageDeleteUser };
+module.exports = {manageUpdateOrder };

@@ -7,7 +7,7 @@ const manageInsertUser = (req, res) => {
 	sql = `INSERT INTO user_info SET nickname='默认用户${timeStamp}', username= ?, password=123456, gender= ?, phone= ?, address= ?, permission= ?`;
 
 	db(sql, params, (result) => {
-    console.log(result);
+    // console.log(result);
 		if (result) {
 			return res.send({
 				status: 200,
