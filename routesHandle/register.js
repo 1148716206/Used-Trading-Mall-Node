@@ -14,7 +14,7 @@ module.exports = (req, res) => {
         req.body.password = bcrypt.hashSync(req.body.password, 10);
 
         const { username, email, password } = req.body;
-        const data = { username, email, password,permission:'1'}
+        const data = { username, email, password,permission:0}
 
         db(sql, data, result => {
             if (result.affectedRows === 1) {

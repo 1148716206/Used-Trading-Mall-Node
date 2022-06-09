@@ -2,7 +2,7 @@ const db = require('../db');
 const path = require("path")
 
 module.exports = (req, res) => {
-    const sql = 'select * from goods_info';
+    const sql = 'select * from goods_info where status=1';
     const localPath = path.join(__dirname, "../upload/user_avatar/")
     let page = []
     db(sql, null, result => {

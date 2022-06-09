@@ -18,7 +18,7 @@ const getGoodsDetail = (req, res) => {
 }
 
 const getGoodsMessage = (req, res) => {
-    const sql = `SELECT * FROM message_info WHERE goods_id=?`
+    const sql = `SELECT * FROM message_info WHERE goods_id=? order by create_time desc` 
     db(sql, req.body.goods_id, result => {
         if (result) {
             return res.send({

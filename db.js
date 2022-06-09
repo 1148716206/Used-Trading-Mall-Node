@@ -1,4 +1,3 @@
-
 //链接数据库
 
 const mysql = require('mysql')

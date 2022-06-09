@@ -4,14 +4,10 @@ let app = express()
 const Joi = require('@hapi/joi')
 const expJWT = require('express-jwt');
 const config = require('./config');
-
-
 const bodyParser = require('body-parser')
 const router = require('./router')
 const multer = require('multer')
 const objMulter = multer({dest: './www/upload/'})
-
-
 
 app.use(require('cors')()) //设置跨域访问
 
@@ -33,6 +29,8 @@ app.use(expJWT({ secret: config.jwtKey, algorithms: ['HS256']}).unless({path: ['
   '/api/manageUpdateOrder',
   '/api/manageUpdateGoods',
   '/api/manageDeleteGoods',
+  '/api/manageCheckGoods',
+  '/api/manageRemoveGoods',
   '/upload/goods/o6WYyWtdwuZ3dozw_eQ6Fma7.png',
 ]}));
 app.use('/',require('./router'))
@@ -57,6 +55,8 @@ app.use('/api/manageUpdateOrder',require('./routes/manage/updateOrder'))
 app.use('/api/manageUpdateGoods',require('./routes/manage/updateGoods'))
 app.use('/api/manageDeleteGoods',require('./routes/manage/deleteGoods'))
 app.use('/api/manageMessage',require('./routes/manage/message'))
+app.use('/api/manageCheckGoods',require('./routes/manage/checkGoods'))
+app.use('/api/manageRemoveGoods',require('./routes/manage/removeGoods'))
 
 
 app.use('/api/manageGoods',require('./routes/manage/goods'))
@@ -86,6 +86,6 @@ app.use('/', router)  //使用路由
 app.use('/upload', express.static('upload'));
 app.use(objMulter.any())
 
-app.listen(8866, (req, res) => {
-    console.log('http://localhost:8866')
+app.listen(8888, (req, res) => {
+    console.log('http://localhost:8888')
 })

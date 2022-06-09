@@ -1,6 +1,7 @@
 const db = require("../db")
 const multiparty = require("multiparty")
 const path = require("path")
+const { log } = require("console")
 
 const setUserGender = (req, res) => {
     const sql = `UPDATE user_info SET gender='${req.body.gender}' WHERE id='${req.body.id}'`
@@ -106,8 +107,15 @@ const getUserInfo = (req, res) => {
 const getAvatar = (req, res) => {
     const sql = "SELECT avatar FROM user_info WHERE username=?"
     db(sql, req.user.username, result => {
-        // console.log(path.join(__dirname, "../upload/user_avatar/"+result[0].avatar));
-        if (result) {
+
+        if(JSON.parse(JSON.stringify(result[0])).avatar == null) {
+            console.log('null');
+            return res.send({
+                status: 200,
+                data: null
+            })
+        }else {
+            console.log('123');
             return res.sendFile(path.join(__dirname, "../upload/user_avatar/"+result[0].avatar))
         }
     })

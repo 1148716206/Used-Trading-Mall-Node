@@ -3,13 +3,13 @@ const multiparty = require("multiparty")
 const path = require("path")
 
 const publishGoods = (req, res) => {
-    const sql = `UPDATE  goods_info SET goods_name='${req.body.goods_name}',username='${req.body.username}', quality=${req.body.quality},goods_number=${req.body.goods_number},goods_desc= '${req.body.goods_desc}', old_price= ${req.body.old_price}, new_price= ${req.body.new_price},create_time='${req.body.create_time}',browse_num=0 WHERE goods_id=${req.body.goods_id}`
+    const sql = `UPDATE  goods_info SET goods_name='${req.body.goods_name}',goods_img='http://www.cz2000.top/bs/admin/images/js.png',username='${req.body.username}', quality=${req.body.quality},goods_number=${req.body.goods_number},goods_desc= '${req.body.goods_desc}', old_price= ${req.body.old_price}, new_price= ${req.body.new_price},create_time='${req.body.create_time}',status=0,browse_num=0 WHERE goods_id=${req.body.goods_id}`
     db(sql, null, result => {
         if (result) {
             // console.log('result',result)
           return res.send({
               status: 200,
-              msg: "发布成功"
+              msg: "发布成功,待审核"
           })
         } else {
             return res.send({
@@ -40,6 +40,7 @@ const publishGoodsImg = (req, res) => {
             const goods_img = files.images[0].path.slice(-28)
             const sql = `INSERT INTO goods_info SET goods_img='${goods_img}'`
             db(sql, null, result => {
+                console.log(result);
                 if (result) {
                     const goodsId= result.insertId
                     const imgSQL = `SELECT goods_img FROM goods_info WHERE goods_id=${goodsId}`

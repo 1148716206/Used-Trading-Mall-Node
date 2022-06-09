@@ -51,12 +51,12 @@ const manageUser = (req, res) => {
 	});
 
 	db(sql, content, (result) => {
-		// console.log(result.length < 10 ? result.length : total)
+		console.log(result.length < 10 ? result.length : total)
 		if (result) {
 			return res.send({
 				status: 200,
 				data: result,
-				total: total,
+				total: result.length < 10 ? result.length : total,
 			});
 		}
 	});

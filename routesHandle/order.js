@@ -39,10 +39,10 @@ const getOrder = (req, res) => {
 };
 
 const addOrder = (req, res) => {
-	const { username, address, phone, payment } = req.body;
+	const { username, address, phone, payment,status } = req.body;
 	const goodsNumber = req.body.goods_list.length;
 	const goods_list = JSON.stringify(req.body.goods_list);
-	const sql = `INSERT INTO order_info SET  goods_list='${goods_list}',username='${username}', address='${address}',phone= '${phone}', payment= '${payment}', status= '0'`;
+	const sql = `INSERT INTO order_info SET  goods_list='${goods_list}',username='${username}', address='${address}',phone= '${phone}', payment= '${payment}', status=${status}`;
 	db(sql, null, (result) => {
 		if (result) {
       //生成订单后 清空购物车
@@ -66,7 +66,7 @@ const deleteOrder = (req, res) => {
 		if (result) {
 			return res.send({
 				status: 200,
-				msg: '删除成功!'
+				msg: '取消成功!'
 			});
 		}
 	});
